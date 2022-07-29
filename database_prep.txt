@@ -1,10 +1,21 @@
 git add phb_store.py
 git add database_prep.txt
-git add README.md
 git commit -m "Patch 0.1, basic update"
 git push
 
+sometimes:
+git add thanks.txt
+git add welcome.txt
+git add README.md
 
+
+db.users.insertMany([
+    {'First Name':"Customer", 'Last Name':"One", 'Username':"Customer1", 'Password':"Pass1", 'Status':"Customer"},
+    {'First Name':"Shopper", 'Last Name':"Two", 'Username':"Shopper2", 'Password':"Pass2", 'Status':"Customer"},
+    {'First Name':"Visitor", 'Last Name':"Three", 'Username':"Visitor3", 'Password':"Pass3", 'Status':"Customer"},
+    {'First Name':"Employee", 'Last Name':"Four", 'Username':"Employee4", 'Password':"Pass4", 'Status':"Employee"},
+    {'First Name':"Manager", 'Last Name':"Five", 'Username':"admin", 'Password':"admin", 'Status':"Admin"}
+])
 
 
 db.armor.insertMany([
@@ -65,7 +76,7 @@ db.weapons.insertMany([
 ])
 
 
-db.gear.insert([
+db.gear.insertMany([
 {name:"Abacus", cost:200, weight:2},
 {name:"Acid (vial)", cost:2500, weight:1},
 {name:"Alchemist's Fire (flask)", cost:5000, weight:1},
@@ -73,7 +84,7 @@ db.gear.insert([
 {name:"Blowgun Needles (50)", cost:100, weight:1},
 {name:"Crossbow Bolts (20)", cost:100, weight:2},
 {name:"Sling Bullets (20)", cost:4, weight:2},
-{name:"Antitoxin (vial)", cost:5000, weight:-},
+{name:"Antitoxin (vial)", cost:5000, weight:'-'},
 {name:"Crystal (Arcane Focus)", cost:1000, weight:1},
 {name:"Orb (Arcane Focus)", cost:2000, weight:3},
 {name:"Rod (Arcane Focus)", cost:1000, weight:2},
@@ -84,14 +95,14 @@ db.gear.insert([
 {name:"Barrel", cost:200, weight:70},
 {name:"Basket", cost:40, weight:2},
 {name:"Bedroll", cost:100, weight:7},
-{name:"Bell", cost:100, weight:-},
+{name:"Bell", cost:100, weight:'-'},
 {name:"Blanket", cost:50, weight:3},
 {name:"Block and Tackle", cost:100, weight:5},
 {name:"Book", cost:2500, weight:5},
 {name:"Bottle, Glass", cost:200, weight:2},
-{name:"Bucket", cost5:, weight:2},
+{name:"Bucket", cost:5, weight:2},
 {name:"Caltrops (20)", cost:100, weight:2},
-{name:"Candle", cost:1, weight:-},
+{name:"Candle", cost:1, weight:'-'},
 {name:"Case, Crossbow Bolt", cost:100, weight:1},
 {name:"Case, Map/Scroll", cost:100, weight:1},
 {name:"Chain (10 ft)", cost:500, weight:10},
@@ -104,8 +115,8 @@ db.gear.insert([
 {name:"Clothes, Traveler's", cost:200, weight:4},
 {name:"Component Pouch", cost:2500, weight:2},
 {name:"Crowbar", cost:200, weight:5},
-{name:"Sprig of Mistletoe (Druidic Focus)", cost:100, weight:-},
-{name:"Totem (Druidic Focus)", cost:100, weight:-},
+{name:"Sprig of Mistletoe (Druidic Focus)", cost:100, weight:'-'},
+{name:"Totem (Druidic Focus)", cost:100, weight:'-'},
 {name:"Wooden Staff (Druidic Focus)", cost:500, weight:4},
 {name:"Yew Wand (Druidic Focus)", cost:1000, weight:1},
 {name:"Fishing Tackle", cost:100, weight:4},
@@ -115,30 +126,30 @@ db.gear.insert([
 {name:"Sledgehammer", cost:200, weight:10},
 {name:"Healer's Kit", cost:500, weight:3},
 {name:"Amulet (Holy Symbol)", cost:500, weight:1},
-{name:"Emblem (Holy Symbol)", cost:500, weight:-},
+{name:"Emblem (Holy Symbol)", cost:500, weight:'-'},
 {name:"Reliquary (Holy Symbol)", cost:500, weight:2},
 {name:"Holy Water (Flask)", cost:2500, weight:1},
 {name:"Hourglass", cost:2500, weight:1},
 {name:"Hunting Trap", cost:500, weight:25},
-{name:"Ink (1 ounce bottle)", cost:1000, weight:-},
-{name:"Ink Pen", cost:2, weight:-},
+{name:"Ink (1 ounce bottle)", cost:1000, weight:'-'},
+{name:"Ink Pen", cost:2, weight:'-'},
 {name:"Jug/Pitcher", cost:2, weight:4},
 {name:"Ladder (10 ft)", cost:10, weight:25},
 {name:"Lamp", cost:50, weight:1},
 {name:"Lantern, Bullseye", cost:1000, weight:2},
 {name:"Lanter, Hooded", cost:500, weight:2},
 {name:"Lock", cost:1000, weight:1},
-{name:"Magnifying Glass", cost:10000, weight:-},
+{name:"Magnifying Glass", cost:10000, weight:'-'},
 {name:"Manacles", cost:200, weight:6},
 {name:"Mess Kit", cost:20, weight:1},
 {name:"Mirror, Steel", cost:500, weight:1},
 {name:"Oil (Flask)", cost:10, weight:1},
-{name:"Paper (One Sheet)", cost:20, weight:-},
-{name:"Parchment (One Sheet)", cost:10, weight:-},
-{name:"Perfume (Vial)", cost:500, weight:-},
+{name:"Paper (One Sheet)", cost:20, weight:'-'},
+{name:"Parchment (One Sheet)", cost:10, weight:'-'},
+{name:"Perfume (Vial)", cost:500, weight:'-'},
 {name:"Pick, Miner's", cost:200, weight:10},
 {name:"Piton", cost:5, weight:1},
-{name:"Poison, Basic (Vial)", cost:10000, weight:-},
+{name:"Poison, Basic (Vial)", cost:10000, weight:'-'},
 {name:"Pole (10 ft)", cost:5, weight:7},
 {name:"Pot, Iron", cost:200, weight:10},
 {name:"Potion of Healing", cost:5000, weight:1},
@@ -151,18 +162,18 @@ db.gear.insert([
 {name:"Rope, Silk (50 ft)", cost:1000, weight:5},
 {name:"Sack", cost:1, weight:1},
 {name:"Scale, Merchant's", cost:500, weight:3},
-{name:"Sealing Wax", cost:50, weight:-},
+{name:"Sealing Wax", cost:50, weight:'-'},
 {name:"Shovel", cost:200, weight:5},
-{name:"Signal Whistle", cost:5, weight:-},
-{name:"Signet Ring", cost:500, weight:-},
-{name:"Soap", cost:2, weight:-},
+{name:"Signal Whistle", cost:5, weight:'-'},
+{name:"Signet Ring", cost:500, weight:'-'},
+{name:"Soap", cost:2, weight:'-'},
 {name:"Spellbook", cost: 5000, weight:3},
 {name:"Spikes, Iron (10)", cost:100, weight:5},
 {name:"Spyglass", cost:100000, weight:1},
 {name:"Tent, Two-Person", cost:200, weight:20},
 {name:"Tinderbox", cost:50, weight:1},
 {name:"Torch", cost:1, weight:1},
-{name:"Vial", cost:10, weight:-},
+{name:"Vial", cost:10, weight:'-'},
 {name:"Waterskin", cost:20, weight:5},
 {name:"Whetstone", cost:1, weight:1}
 ])
