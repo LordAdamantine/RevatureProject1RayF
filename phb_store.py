@@ -18,8 +18,8 @@ Event Logging
 
 
 Merchandise database:
-PHB items, weapons, armor, etc.
-Different tables for each to help differentiate.
+PHB weapons, armor, gear, limited magic items.
+Different collections for each to help differentiate.
 '''
 
 def main():

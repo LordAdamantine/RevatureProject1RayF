@@ -1,5 +1,6 @@
 git add phb_store.py
 git add database_prep.txt
+git add README.md
 git commit -m "Patch 0.1, basic update"
 git push
 
