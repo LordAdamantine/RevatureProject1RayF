@@ -2,9 +2,9 @@ import os
 import logging
 from pymongo import MongoClient
 import re
+clear = lambda: os.system('cls')
 
 def login(users):
-    clear = lambda: os.system('cls')
 
     while True:     # This block is simple input filtering.
         while True:
@@ -75,7 +75,7 @@ def login(users):
                     success = False
                     break
             invalid_attempts += 1.
-        
+        clear()
         # Returns with user info loaded from successful login.
         return existing
 
@@ -128,7 +128,7 @@ def login(users):
                 continue
             else:
                 break
-        
+        clear()
         success = True
         while success:
             while True:
@@ -145,7 +145,7 @@ def login(users):
                     continue
                 else:
                     break
-            
+            clear()
             pw_attempts = 0
             while True:
                 if pw_attempts >3:
@@ -163,7 +163,7 @@ def login(users):
                 else:
                     success = False
                     break
-        
+        clear()
         # First instance of writing to the database to occur in the code so far.
         users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer"})
         new_user = users.find_one({'Username':str(uname)})

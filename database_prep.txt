@@ -1,13 +1,13 @@
 db.users.insertMany([
-    {'First Name':"Customer", 'Last Name':"One", 'Username':"Customer1", 'Password':"Pass1", 'Status':"Customer", 'Wallet':100.00},
-    {'First Name':"Shopper", 'Last Name':"Two", 'Username':"Shopper2", 'Password':"Pass2", 'Status':"Customer", 'Wallet':100.00},
-    {'First Name':"Visitor", 'Last Name':"Three", 'Username':"Visitor3", 'Password':"Pass3", 'Status':"Customer", 'Wallet':100.00},
-    {'First Name':"Employee", 'Last Name':"Four", 'Username':"Employee4", 'Password':"Pass4", 'Status':"Employee", 'Wallet':100.00},
-    {'First Name':"Manager", 'Last Name':"Five", 'Username':"admin", 'Password':"admin", 'Status':"Admin", 'Wallet':100.00}
+    {'First Name':"Customer", 'Last Name':"One", 'Username':"Customer1", 'Password':"Pass1", 'Status':"Customer", 'Wallet':10000},
+    {'First Name':"Shopper", 'Last Name':"Two", 'Username':"Shopper2", 'Password':"Pass2", 'Status':"Customer", 'Wallet':10000},
+    {'First Name':"Visitor", 'Last Name':"Three", 'Username':"Visitor3", 'Password':"Pass3", 'Status':"Customer", 'Wallet':10000},
+    {'First Name':"Employee", 'Last Name':"Four", 'Username':"Employee4", 'Password':"Pass4", 'Status':"Employee", 'Wallet':10000},
+    {'First Name':"Manager", 'Last Name':"Five", 'Username':"admin", 'Password':"admin", 'Status':"Admin", 'Wallet':1000000}
 ])
 
 db.orders.insertMany([
-{Username:'Customer1', Orders:[]},
+{Username:'Customer1', Spent:200, Bought:'Dagger', Category:'Weapon'}
 ])
 
 ##########################################################################

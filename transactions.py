@@ -2,55 +2,43 @@ import os
 import logging
 from pymongo import MongoClient
 import re
+from conversion_kit import conversion
+from purchase_order_weapons import purchase_weapon
+from purchase_order_armor import purchase_armor
+from purchase_order_gear import purchase_gear
+clear = lambda: os.system('cls')
 
-def purchase(armor, weapons, gear, misc, orders, user):
-    clear = lambda: os.system('cls')
-
+def purchase(armor, weapons, gear, misc, orders, user, users, discount):
+    clear()
     
-
-
-
-def conversion(amount):     # Converts cost values into 5E currencies for aesthetic.
-    # Initialize base variables for comparison.
-
-    base_value = amount
-    new_value = base_value
-    coppers = 0
-    silvers = 0
-    golds = 0
-    plats = 0
-    value = ""
-
-    while True:     # Cycles amount through, tabulating amount of each coin before appending them to a string at the end.
-        if new_value < 10:
-            coppers = new_value
-            #print("Copper test")
+    while True:
+        
+        try:
+            menu_option = str(input(f"\n\n\tAvailable Funds: {conversion(user.get('Wallet'))}\n\tCategories:\n\tArmor\n\tWeapons\n\tAdventuring Gear\n\tOther\n\tQuit\n\t"))
+            menu_option = menu_option.lower()
+        except ValueError as ve:
+            print("Invalid input, please try again.")
+            logging.error("Invalid store menu input, trying again...")
+        
+        if "weap" in menu_option:
+            purchase_weapon(weapons, orders, user, users, discount)
+        elif "arm" in menu_option:
+            purchase_armor(armor, orders, user, users, discount)
+        elif "adven" in menu_option:
+            purchase_gear(gear, orders, user, users, discount)
+        elif "gear" in menu_option:
+            purchase_gear(gear, orders, user, users, discount)
+        elif "magic" in menu_option:
+            print("Coming soon...")
+        elif "misc" in menu_option:
+            print("Coming soon...")
+        elif "other" in menu_option:
+            print("Coming soon...")
+        elif "quit"  in menu_option:
             break
-        if new_value > 9:
-            if new_value > 99:
-                if new_value > 999:
-                    new_value -= 1000
-                    plats += 1
-                    #print("Plat test")
-                    continue
-                new_value -= 100
-                golds += 1
-                #print("Gold test")
-                continue
-            new_value -= 10
-            silvers += 1
-            #print("Silver test")
-            continue
-    
-    if plats > 0:
-        value += (f"{plats} PP ")
-    if golds > 0:
-        value += (f"{golds} GP ")
-    if silvers > 0:
-        value += (f"{silvers} SP ")
-    if coppers > 0:
-        value += (f"{coppers} CP")
+        else:
+            print("Error, try again.")
+            logging.error("Store option limit exceeded, trying again...")
 
-    return value
-    
+# Separated purchase definitions into separate modules due to large size from unique modifications necessary for each.
         
