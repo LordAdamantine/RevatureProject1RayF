@@ -45,15 +45,16 @@ def purchase_gear(gear, orders, user, users, discount, client, userWallet):
                     print("\n" + "Gear Stock - Search")
                     for elem in gear_test:
                         if int(elem.get('stock')) != 0:
-                            item_name = str(elem.get('name'))
-                            item_price = conversion(elem.get('cost'))
-                            item_weight = str(elem.get('weight'))
-                            item_count = str(elem.get('stock'))
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_name = str(elem.get('name'))
+                                item_price = conversion(elem.get('cost'))
+                                item_weight = str(elem.get('weight'))
+                                item_count = str(elem.get('stock'))
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "cost" in menu_option:
             while True:
                 menu_option = str(input(f"\n\tSort by: Cost\n\tAscending\n\tDescending\n\tPurchase\n\tQuit\n"))
@@ -89,13 +90,14 @@ def purchase_gear(gear, orders, user, users, discount, client, userWallet):
                     print("\n" + "Gear Stock - Price")
                     for elem in gear_test:
                         if int(elem.get('stock')) != 0:
-                            item_price = conversion(elem.get('cost'))
-                            item_name = str(elem.get('name'))
-                            item_count = str(elem.get('stock'))
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_price = conversion(elem.get('cost'))
+                                item_name = str(elem.get('name'))
+                                item_count = str(elem.get('stock'))
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "wei" in menu_option:
             while True:
                 menu_option = str(input(f"\n\tSort by: Weight\n\tAscending\n\tDescending\n\tPurchase\n\tQuit\n"))
@@ -131,15 +133,16 @@ def purchase_gear(gear, orders, user, users, discount, client, userWallet):
                     print("\n" + "Gear Stock - Price")
                     for elem in gear_test:
                         if int(elem.get('stock')) != 0:
-                            item_weight = str(elem.get('weight'))
-                            item_name = str(elem.get('name'))
-                            item_price = conversion(elem.get('cost'))
-                            item_count = str(elem.get('stock'))
-                            print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_weight = str(elem.get('weight'))
+                                item_name = str(elem.get('name'))
+                                item_price = conversion(elem.get('cost'))
+                                item_count = str(elem.get('stock'))
+                                print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "buy" in menu_option:
             purchasing = True
         elif "pur" in menu_option:
@@ -217,12 +220,7 @@ def purchase_gear(gear, orders, user, users, discount, client, userWallet):
                 username = user.get('Username')
                 ware = cart.get('name')
                 price = cart.get('cost')
-                print(f"Thank you for purchasing a {ware}! Enjoy your purchase!")
                 logging.info(f"Pushing order to database, charging user: {username}.")
-                newOrder = {'User':str(username), 'Spent':int(price), 'Bought':str(ware), 'Category':'Gear'}
-                with client.start_session() as session:
-                    with session.start_transaction():
-                        orders.insert_one(newOrder)
                 newStock = int(cart.get('stock')) - 1
                 with client.start_session() as session:
                     with session.start_transaction():
@@ -236,4 +234,9 @@ def purchase_gear(gear, orders, user, users, discount, client, userWallet):
                 UserName = user.get('Username')
                 user = users.find_one({'Username':str(UserName)})
                 userWallet = newWallet
-                input()
+                newOrder = {'User':str(username), 'Spent':int(price), 'Bought':str(ware), 'Category':'Gear'}
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        orders.insert_one(newOrder)
+                input(f"Thank you for purchasing a {ware} at {conversion(price)}! Enjoy your purchase!")
+                return userWallet

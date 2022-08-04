@@ -5,6 +5,9 @@ import os
 from login_procedures import login
 from transactions import purchase
 from conversion_kit import conversion
+from administration_users import user_administration
+from administration_orders import orders_administration
+from administration_stock import stock_administration
 
 '''
 To Do:
@@ -113,11 +116,13 @@ def main():
                 shopping = True
                 break
             elif "ord" in menu_option:
-                pass
+                orders_administration(users, orders, client)
             elif "hist" in menu_option:
-                pass
+                orders_administration(users, orders, client)
             elif "acc" in menu_option:
-                pass
+                user_administration(users, client)
+            elif "stock" in menu_option:
+                stock_administration(armor, weapons, gear, misc, client)
             elif "qui"  in menu_option:
                 break
             else:
@@ -129,9 +134,11 @@ def main():
 
         while shopping:
             clear()
+            
+            UserName = user.get('Username')
+            user = users.find_one({'Username':str(UserName)})
             try:
-                print("You have: " + conversion(userWallet))
-                menu_option = str(input(f"\n\n\t\tWhat would you like to do today?\n\tMake a Purchase\n\tOrder History\n\tDeposit Funds\n\tQuit\n\t"))
+                menu_option = str(input(f"\nYou have: {conversion(userWallet)}\n\t\tWhat would you like to do today?\n\tMake a Purchase\n\tOrder History\n\tDeposit Funds\n\tQuit\n\t"))
                 menu_option = menu_option.lower()
             except ValueError as ve:
                 print("Invalid input, please try again.")
@@ -141,13 +148,13 @@ def main():
             clear()
 
             if "shop" in menu_option:
-                purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
+                userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
             elif "pur" in menu_option:
-                purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
+                userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
             elif "store" in menu_option:
-                purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
+                userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
             elif "buy" in menu_option:
-                purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
+                userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
             elif "order" in menu_option:
                 orderHistory(orders, user, orders)
             elif "hist" in menu_option:
@@ -192,8 +199,6 @@ def main():
                             depositing = False
                             break
 
-
-                        
             elif "qui"  in menu_option:
                 break
             else:
@@ -218,15 +223,16 @@ def orderHistory(orders, user, users):
     order_history = orders.find({'User': f'{UserName}'}).sort('name')
 
     for elem in order_history:
-        user_name = elem.get('User')
-        value = conversion(elem.get('Spent'))
-        category = elem.get('Category')
-        item_name = elem.get('Bought')
-        print("User: " + f"{user_name:20}", end=" | ")
-        print("Amount Spent: " + f"{value:>15}", end=" | ")
-        print("Item Bought: " + f"{item_name:40}", end=" | ")
-        print("Category: " + f"{category:>10}", end=" | \n")
-    input()
+        if elem != None:
+            user_name = elem.get('User')
+            value = conversion(elem.get('Spent'))
+            category = elem.get('Category')
+            item_name = elem.get('Bought')
+            print("User: " + f"{user_name:20}", end=" | ")
+            print("Amount Spent: " + f"{value:>15}", end=" | ")
+            print("Item Bought: " + f"{item_name:40}", end=" | ")
+            print("Category: " + f"{category:>10}", end=" | \n")
+    input("Press any key to continue.")
 
 
 
@@ -236,12 +242,14 @@ def accounts_print(users):
     user_list = users.find({}, {'First Name':1, 'Status':1, 'Wallet':1, '_id':0})
     
     for elem in user_list:
-        user_name = str(elem.get('First Name'))
-        user_status = str(elem.get('Status'))
-        user_wallet = conversion(elem.get('Wallet'))
-        print("User: " + f"{user_name:20}", end=" | ")
-        print("Account type: " + f"{user_status:>15}", end=" | ")
-        print("Available Funds: " + f"{user_wallet:>15}", end=" | \n")
+        if elem != None:
+            user_name = str(elem.get('First Name'))
+            user_status = str(elem.get('Status'))
+            user_wallet = conversion(elem.get('Wallet'))
+            print("User: " + f"{user_name:20}", end=" | ")
+            print("Account type: " + f"{user_status:>15}", end=" | ")
+            print("Available Funds: " + f"{user_wallet:>15}", end=" | \n")
+    input("Press any key to continue.")
 
 def stock_print(armor, weapons, gear, misc):
     armor_test = armor.find({}, {'name':1, 'cost':1, 'stock':1, '_id':0})
@@ -251,37 +259,42 @@ def stock_print(armor, weapons, gear, misc):
 
     print("\n" + "Armor Sets")
     for elem in armor_test:
-        item_name = str(elem.get('name'))
-        item_price = conversion(elem.get('cost'))
-        item_count = str(elem.get('stock'))
-        print("Item: " + f"{item_name:40}", end=" | ")
-        print("Price: " + f"{item_price:>15}", end=" | ")
-        print("Count: " + f"{item_count:>5}", end=" | \n")
+        if elem != None:
+            item_name = str(elem.get('name'))
+            item_price = conversion(elem.get('cost'))
+            item_count = str(elem.get('stock'))
+            print("Item: " + f"{item_name:40}", end=" | ")
+            print("Price: " + f"{item_price:>15}", end=" | ")
+            print("Count: " + f"{item_count:>5}", end=" | \n")
     print("\n" + "Weapons")
     for elem in weapons_test:
-        item_name = str(elem.get('name'))
-        item_price = conversion(elem.get('cost'))
-        item_count = str(elem.get('stock'))
-        print("Item: " + f"{item_name:40}", end=" | ")
-        print("Price: " + f"{item_price:>15}", end=" | ")
-        print("Count: " + f"{item_count:>5}", end=" | \n")
+        if elem != None:
+            item_name = str(elem.get('name'))
+            item_price = conversion(elem.get('cost'))
+            item_count = str(elem.get('stock'))
+            print("Item: " + f"{item_name:40}", end=" | ")
+            print("Price: " + f"{item_price:>15}", end=" | ")
+            print("Count: " + f"{item_count:>5}", end=" | \n")
     print("\n" + "Miscellaneous Gear")
     for elem in gear_test:
-        item_name = str(elem.get('name'))
-        item_price = conversion(elem.get('cost'))
-        item_count = str(elem.get('stock'))
-        print("Item: " + f"{item_name:40}", end=" | ")
-        print("Price: " + f"{item_price:>15}", end=" | ")
-        print("Count: " + f"{item_count:>5}", end=" | \n")
+        if elem != None:
+            item_name = str(elem.get('name'))
+            item_price = conversion(elem.get('cost'))
+            item_count = str(elem.get('stock'))
+            print("Item: " + f"{item_name:40}", end=" | ")
+            print("Price: " + f"{item_price:>15}", end=" | ")
+            print("Count: " + f"{item_count:>5}", end=" | \n")
     print("\n" + "Magical Baubles")
     for elem in misc_test:
-        item_name = str(elem.get('name'))
-        item_price = conversion(elem.get('cost'))
-        item_count = str(elem.get('stock'))
-        print("Item: " + f"{item_name:40}", end=" | ")
-        print("Price: " + f"{item_price:>15}", end=" | ")
-        print("Count: " + f"{item_count:>5}", end=" | \n")
+        if elem != None:
+            item_name = str(elem.get('name'))
+            item_price = conversion(elem.get('cost'))
+            item_count = str(elem.get('stock'))
+            print("Item: " + f"{item_name:40}", end=" | ")
+            print("Price: " + f"{item_price:>15}", end=" | ")
+            print("Count: " + f"{item_count:>5}", end=" | \n")
     print("\n")
+    input("Press any key to continue.")
 
 
 if __name__ == "__main__":

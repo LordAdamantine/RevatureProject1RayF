@@ -87,14 +87,15 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     print("\n" + "Weapons Stock - classification")
                     for elem in weapons_test:
                         if int(elem.get('stock')) != 0:
-                            item_class = str(elem.get('classification'))
-                            item_price = conversion(elem.get('cost'))
-                            item_name = str(elem.get('name'))
-                            item_count = str(elem.get('stock'))
-                            print("Class: " + f"{item_class:20}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
+                            if elem != None:
+                                item_class = str(elem.get('classification'))
+                                item_price = conversion(elem.get('cost'))
+                                item_name = str(elem.get('name'))
+                                item_count = str(elem.get('stock'))
+                                print("Class: " + f"{item_class:20}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
                     print("\n\n")
         elif "name" in menu_option:     # Search by name function, compares a regular expression to the names of all entries.
             while True:
@@ -125,19 +126,20 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     print("\n" + "Weapons Stock - Search")
                     for elem in weapons_test:
                         if int(elem.get('stock')) != 0:
-                            item_name = str(elem.get('name'))
-                            item_class = str(elem.get('classification'))
-                            item_damage = str(elem.get('damage'))
-                            item_price = conversion(elem.get('cost'))
-                            item_weight = str(elem.get('weight'))
-                            item_count = str(elem.get('stock'))
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Class: " + f"{item_class:20}", end=" | ")
-                            print("Damage: " + f"{item_damage:20}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_name = str(elem.get('name'))
+                                item_class = str(elem.get('classification'))
+                                item_damage = str(elem.get('damage'))
+                                item_price = conversion(elem.get('cost'))
+                                item_weight = str(elem.get('weight'))
+                                item_count = str(elem.get('stock'))
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Class: " + f"{item_class:20}", end=" | ")
+                                print("Damage: " + f"{item_damage:20}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "cost" in menu_option:
             while True:
                 menu_option = str(input(f"\n\tSort by: Cost\n\tAscending\n\tDescending\n\tPurchase\n\tQuit\n"))
@@ -173,13 +175,14 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     print("\n" + "Weapons Stock - Price")
                     for elem in weapons_test:
                         if int(elem.get('stock')) != 0:
-                            item_price = conversion(elem.get('cost'))
-                            item_name = str(elem.get('name'))
-                            item_count = str(elem.get('stock'))
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_price = conversion(elem.get('cost'))
+                                item_name = str(elem.get('name'))
+                                item_count = str(elem.get('stock'))
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "damage" in menu_option:
             while True:     # Forgot to add leniency in input, accidentally had it anyway because of my use of regex, high five!
                 menu_option = str(input(f"\n\tSort by: Damage Type\n\tSlashing\n\tPiercing\n\tBludgeoning\n\tOther\n\tPurchase\n\tQuit\n\t"))
@@ -210,15 +213,16 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     print("\n" + "Weapons Stock - classification")
                     for elem in weapons_test:
                         if int(elem.get('stock')) != 0:
-                            item_damage = str(elem.get('damage'))
-                            item_name = str(elem.get('name'))
-                            item_price = conversion(elem.get('cost'))
-                            item_count = str(elem.get('stock'))
-                            print("Damage: " + f"{item_damage:20}", end=" | ")
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                    print("\n\n")
+                            if elem != None:
+                                item_damage = str(elem.get('damage'))
+                                item_name = str(elem.get('name'))
+                                item_price = conversion(elem.get('cost'))
+                                item_count = str(elem.get('stock'))
+                                print("Damage: " + f"{item_damage:20}", end=" | ")
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n")
+                    input("\n\tPress enter to continue.")
         elif "prop" in menu_option:
             while True:     # Only one that interacts with the arrays that hold the property values.
                 weapons_test = None
@@ -247,16 +251,17 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     print("\n" + "Weapons Stock - Properties")
                     for elem in weapons_test:
                         if int(elem.get('stock')) != 0:
-                            item_name = str(elem.get('name'))
-                            item_price = conversion(elem.get('cost'))
-                            item_count = str(elem.get('stock'))
-                            print("Item: " + f"{item_name:40}", end=" | ")
-                            print("Price: " + f"{item_price:>15}", end=" | ")
-                            print("Count: " + f"{item_count:>5}", end=" | \n")
-                            for item_property in elem.get('properties'):        # The magic code that made it somehow work.
-                                print(item_property, end=", ")
-                            print("")
-                    print("\n\n")
+                            if elem != None:
+                                item_name = str(elem.get('name'))
+                                item_price = conversion(elem.get('cost'))
+                                item_count = str(elem.get('stock'))
+                                print("Item: " + f"{item_name:40}", end=" | ")
+                                print("Price: " + f"{item_price:>15}", end=" | ")
+                                print("Count: " + f"{item_count:>5}", end=" | \n\t\t")
+                                for item_property in elem.get('properties'):        # The magic code that made it somehow work.
+                                    print(item_property, end=", ")
+                            print("\n")
+                    input("\n\tPress enter to continue.")
         elif "buy" in menu_option:
             purchasing = True
         elif "pur" in menu_option:
@@ -309,7 +314,7 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                 print("Count: " + f"{item_count:>5}", end=" | \n")
                 for item_property in cart.get('properties'):
                     print(item_property, end=", ")
-                print("")
+                print("\n")
 
                 while True:     # User confirmation input checking.
                     try:
@@ -338,12 +343,7 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
             # Confirmed order pushed to orders database.
             if confirmed == False:
                 username = user.get('Username')
-                print(f"Thank you for purchasing a {cart.get('name')}! Enjoy your purchase!")
                 logging.info(f"Pushing order to database, charging user: {username}.")
-                newOrder = {'User':str(user.get('Username')), 'Spent':int(cart.get('cost')), 'Bought':str(cart.get('name')), 'Category':'Weapon'}
-                with client.start_session() as session:
-                    with session.start_transaction():
-                        orders.insert_one(newOrder)
                 newStock = int(cart.get('stock')) - 1
                 with client.start_session() as session:
                     with session.start_transaction():
@@ -361,4 +361,9 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                 UserName = user.get('Username')
                 user = users.find_one({'Username':str(UserName)})
                 userWallet = newWallet
-                input()
+                newOrder = {'User':str(user.get('Username')), 'Spent':price, 'Bought':str(cart.get('name')), 'Category':'Weapon'}
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        orders.insert_one(newOrder)
+                input(f"Thank you for purchasing a {cart.get('name')} at {conversion(price)}! Enjoy your purchase!")
+                return userWallet

@@ -82,96 +82,100 @@ def login(users, client):
 
     if option == 2:         # New user account creation.
         print("Welcome!  Let's get you set up!")
-
-        while True:
-            try:
-                uname = str(input("\t\tPlease create a user name:\t\t"))
-                check = re.search("," or "@" or "!" or "#" or "$" or "%" or "&", uname)
-                existing = users.find_one({'Username':str(uname)})
-                if check != None:
-                    raise ValueError
-                if existing != None:        # Prevents duplicate usernames.
-                    print("Username detected, please try again.")
-                    logging.error("Attempted duplicate Username, trying again...")
-                    continue
-            except ValueError as ve:
-                print("Warning, improper input detected.")
-                logging.error("Attempted illegal character in username, trying again...")
-                continue
-            else:
-                break
-
-        while True:     # Simple input checking for these steps.
-            try:
-                fname = str(input("\t\tPlease input your first name:\t\t"))
-                check = re.search('[0-9]+', fname)
-                if check != None:
-                    raise ValueError
-            except ValueError as ve:
-                print("Warning, improper input detected.")
-                logging.error("Attempted illegal integer in name, trying again...")
-                print(check)
-                continue
-            else:
-                break
-
-        while True:
-            try:
-                lname = str(input("\t\tPlease input your first name:\t\t"))
-                check = re.search('[0-9]+', lname)
-                if check != None:
-                    raise ValueError
-            except ValueError as ve:
-                print("Warning, improper input detected.")
-                logging.error("Attempted illegal integer in name, trying again...")
-                print(check)
-                continue
-            else:
-                break
-        clear()
-        success = True
-        while success:
-            while True:
-                try:
-                    pword = str(input("\t\tPlease enter a password:\t\t"))
-                    if check != None:
-                        raise ValueError
-                    if len(pword) < 8:
-                        print("Password must have at least 8 characters.")
-                        continue
-                except ValueError as ve:
-                    print("Warning, improper input.")
-                    logging.error("Attempted illegal special characters in name, trying again...")
-                    continue
-                else:
-                    break
-            clear()
-            pw_attempts = 0
-            while True:
-                if pw_attempts >3:
-                    print("Sorry, let's try this again.")
-                    break
-                try:
-                    pword_check = str(input("\t\tPlease re-enter password:\t\t"))
-                    if pword_check != pword:
-                        raise ValueError
-                except ValueError as ve:
-                    print("Warning, improper input.")
-                    logging.error("Attempted illegal special characters in name, trying again...")
-                    pw_attempts += 1
-                    continue
-                else:
-                    success = False
-                    break
-        clear()
-        # First instance of writing to the database to occur in the code so far.
-        with client.start_session() as session:
-            with session.start_transaction():
-                users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer"})
-        new_user = users.find_one({'Username':str(uname)})
+        newUser = signup(users, client)
+        new_user = users.find_one({'Username':str(newUser)})
         return new_user
-        
 
     if option == 3:
         clear()
         return None
+
+def signup(users, client):
+    while True:
+        try:
+            uname = str(input("\t\tPlease create a user name:\t\t"))
+            check = re.search("," or "@" or "!" or "#" or "$" or "%" or "&", uname)
+            existing = users.find_one({'Username':str(uname)})
+            if check != None:
+                raise ValueError
+            if existing != None:        # Prevents duplicate usernames.
+                print("Username detected, please try again.")
+                logging.error("Attempted duplicate Username, trying again...")
+                continue
+        except ValueError as ve:
+            print("Warning, improper input detected.")
+            logging.error("Attempted illegal character in username, trying again...")
+            continue
+        else:
+            break
+
+    while True:     # Simple input checking for these steps.
+        try:
+            fname = str(input("\t\tPlease input your first name:\t\t"))
+            check = re.search('[0-9]+', fname)
+            if check != None:
+                raise ValueError
+        except ValueError as ve:
+            print("Warning, improper input detected.")
+            logging.error("Attempted illegal integer in name, trying again...")
+            print(check)
+            continue
+        else:
+            break
+
+    while True:
+        try:
+            lname = str(input("\t\tPlease input your last name:\t\t"))
+            check = re.search('[0-9]+', lname)
+            if check != None:
+                raise ValueError
+        except ValueError as ve:
+            print("Warning, improper input detected.")
+            logging.error("Attempted illegal integer in name, trying again...")
+            print(check)
+            continue
+        else:
+            break
+    clear()
+    success = True
+    while success:
+        while True:
+            try:
+                pword = str(input("\t\tPlease enter a password:\t\t"))
+                if check != None:
+                    raise ValueError
+                if len(pword) < 8:
+                    print("Password must have at least 8 characters.")
+                    continue
+            except ValueError as ve:
+                print("Warning, improper input.")
+                logging.error("Attempted illegal special characters in name, trying again...")
+                continue
+            else:
+                break
+        clear()
+        pw_attempts = 0
+        while True:
+            if pw_attempts >3:
+                print("Sorry, let's try this again.")
+                break
+            try:
+                pword_check = str(input("\t\tPlease re-enter password:\t\t"))
+                if pword_check != pword:
+                    raise ValueError
+            except ValueError as ve:
+                print("Warning, improper input.")
+                logging.error("Attempted illegal special characters in name, trying again...")
+                pw_attempts += 1
+                continue
+            else:
+                success = False
+                break
+    clear()
+    # First instance of writing to the database to occur in the code so far.
+    with client.start_session() as session:
+        with session.start_transaction():
+            users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer", 'Wallet':10000})
+    new_user = users.find_one({'Username':str(uname)})
+    new_user = new_user.get('Username')
+    return new_user

@@ -9,10 +9,9 @@ from purchase_order_gear import purchase_gear
 clear = lambda: os.system('cls')
 
 def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet):
-    clear()
     
     while True:
-        
+        clear()
         try:
             menu_option = str(input(f"\n\n\tAvailable Funds: {conversion(userWallet)}\n\tCategories:\n\tArmor\n\tWeapons\n\tAdventuring Gear\n\tOther\n\tQuit\n\t"))
             menu_option = menu_option.lower()
@@ -21,13 +20,13 @@ def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, 
             logging.error("Invalid store menu input, trying again...")
         
         if "weap" in menu_option:
-            purchase_weapon(weapons, orders, user, users, discount, client, userWallet)
+            userWallet = purchase_weapon(weapons, orders, user, users, discount, client, userWallet)
         elif "arm" in menu_option:
-            purchase_armor(armor, orders, user, users, discount, client, userWallet)
+            userWallet = purchase_armor(armor, orders, user, users, discount, client, userWallet)
         elif "adven" in menu_option:
-            purchase_gear(gear, orders, user, users, discount, client, userWallet)
+            userWallet = purchase_gear(gear, orders, user, users, discount, client, userWallet)
         elif "gear" in menu_option:
-            purchase_gear(gear, orders, user, users, discount, client, userWallet)
+            userWallet = purchase_gear(gear, orders, user, users, discount, client, userWallet)
         elif "magic" in menu_option:
             print("Coming soon...")
         elif "misc" in menu_option:
@@ -35,7 +34,7 @@ def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, 
         elif "other" in menu_option:
             print("Coming soon...")
         elif "quit"  in menu_option:
-            break
+            return userWallet
         else:
             print("Error, try again.")
             logging.error("Store option limit exceeded, trying again...")
