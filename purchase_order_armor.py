@@ -4,17 +4,20 @@ import logging
 import os
 clear = lambda: os.system('cls')
 
-def purchase_armor(armor, orders, user, users, discount):
+def purchase_armor(armor, orders, user, users, discount, client, userWallet):
     logging.info("Entered armor purchase module.")
-    while True:
+    quit = True
+    while quit:
         purchasing = False
         clear()
         try:
-            menu_option = str(input(f"\n\tAvailable Funds: {conversion(user.get('Wallet'))}\n\tSort by: Armor\n\tClassification\n\tName\n\tCost\n\tWeight\n\tOther\n\tPurchase\n\tQuit\n\t"))
+            menu_option = str(input(f"\n\tAvailable Funds: {conversion(userWallet)}\n\tSort by: Armor\n\tClassification\n\tName\n\tCost\n\tWeight\n\tOther\n\tPurchase\n\tQuit\n\t"))
             menu_option = menu_option.lower()
         except ValueError as ve:
             print("Invalid input, please try again.")
             logging.error("Invalid store menu input, trying again...")
+        UserName = user.get('Username')
+        user = users.find_one({'Username':str(UserName)})
 
         if "clas" in menu_option:
             while True:
@@ -38,13 +41,13 @@ def purchase_armor(armor, orders, user, users, discount):
                 elif "all" in menu_option:
                     armor_test = armor.find({}).sort('classification')
                     printing = True
-                elif "purchase" in menu_option:
+                elif "pur" in menu_option:
                     purchasing = True
                     break
                 elif "buy" in menu_option:
                     purchasing = True
                     break
-                elif "quit" in menu_option:
+                elif "qui" in menu_option:
                     break
                 else:
                     print("Invalid input, please try again.")
@@ -76,7 +79,7 @@ def purchase_armor(armor, orders, user, users, discount):
                 if type(armor_test) == None:
                     print("Invalid input, please try again.")
                     logging.error("Invalid store menu input, trying again...")
-                if "purchase" in menu_option:
+                if "purc" in menu_option:
                     purchasing = True
                     break
                 elif "buy" in menu_option:
@@ -262,6 +265,7 @@ def purchase_armor(armor, orders, user, users, discount):
                     logging.error("Invalid store menu input, trying again...")
 
                 if "quit" in purchase_name:
+                    purchasing = False
                     break
 
                 cart = armor.find_one({'name': {'$regex': f'{purchase_name}', '$options': 'i'}})
@@ -274,7 +278,7 @@ def purchase_armor(armor, orders, user, users, discount):
                     print("I'm sorry, that item is out of stock, please select another item.")
                     logging.stock("Item out of stock")
                     continue
-                elif int(cart.get('cost')) > int(user.get('Wallet')):
+                elif int(cart.get('cost')) > int(userWallet):
                     print("I'm sorry, you cannot seem to afford that, please select another item.")
                     logging.stock("Insufficient funds attempt.")
                     continue
@@ -292,8 +296,7 @@ def purchase_armor(armor, orders, user, users, discount):
                 print("Class: " + f"{item_class:20}", end=" | ")
                 print("Armor Class: " + f"{item_AC:20}", end=" | ")
                 print("Price: " + f"{item_price:>15}", end=" | ")
-                print("\n")
-                print("Stealth: " + f"{armor_stealth:>15}", end=" | ")
+                print("\n" + "Stealth: " + f"{armor_stealth:>15}", end=" | ")
                 print("Strength: " + f"{armor_strength:>15}", end=" | ")
                 print("Weight: " + f"{item_weight:>5} lbs", end=" | ")
                 print("Count: " + f"{item_count:>5}", end=" | \n")
@@ -324,16 +327,29 @@ def purchase_armor(armor, orders, user, users, discount):
 
             # Confirmed order pushed to orders database.
             if confirmed == False:
+                username = user.get('Username')
                 print(f"Thank you for purchasing a {cart.get('name')}! Enjoy your purchase!")
-                logging.info("Pushing order to database.")
-                newOrder = {'User':str(user.get('Username')), 'Spent':int(cart.get('cost')), 'Bought':str(cart.get('name')), 'Category':'Armor'}
-                orders.insert_one(newOrder)
+                logging.info(f"Pushing order to database, charging user: {username}.")
                 newStock = int(cart.get('stock')) - 1
-                armor.update_one({'name':str(cart.get('name'))}, { "$set": { 'stock': newStock } })
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        armor.update_one({'name':str(cart.get('name'))}, { "$set": { 'stock': newStock } })
                 if discount:
                     discounted = cart.get('cost') * 0.90
-                    newWallet = int(user.get('Wallet')) - int(discounted)
+                    newWallet = int(userWallet) - int(discounted)
+                    price = discounted
                 else:
-                    newWallet = int(user.get('Wallet')) - int(cart.get('cost'))
-                users.update_one({'Username':str(user.get('Username'))}, { "$set": { 'Wallet': newWallet}})
+                    newWallet = int(userWallet) - int(cart.get('cost'))
+                    price = cart.get('cost')
+                newOrder = {'User':str(user.get('Username')), 'Spent':int(price), 'Bought':str(cart.get('name')), 'Category':'Armor'}
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        orders.insert_one(newOrder)
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        users.update_one({'Username':str(user.get('Username'))}, { "$set": { 'Wallet': newWallet}})
+                userWallet = newWallet
+                UserName = user.get('Username')
+                user = users.find_one({'Username':str(UserName)})
+                quit = False
                 input()

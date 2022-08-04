@@ -10,21 +10,22 @@ def conversion(amount):     # Converts cost values into 5E currencies for aesthe
     plats = 0
     value = ""
 
-    if base_value < 10:
-        value = f"{base_value} CP"
-        return value
-    if (base_value % 10) == 0:
-        if (base_value % 100) == 0:
-            if (base_value % 1000) == 0:
-                new_value = int(base_value / 1000)
-                value = f"{new_value} PP"
-                return value
-            new_value = int(base_value / 100)
-            value = f"{new_value} GP"
-            return value
-        new_value = int(base_value / 10)
-        value = f"{new_value} SP"
-        return value
+    # Tried to make it detect just solid blocks of coins, but it kept causing issues, so it's gone.
+    # if base_value < 10:
+    #     value = f"{base_value} CP"
+    #     return value
+    # if (base_value % 10) == 0:
+    #     if (base_value % 100) == 0:
+    #         if (base_value % 1000) == 0:
+    #             new_value = int(base_value / 1000)
+    #             value = f"{new_value} PP"
+    #             return value
+    #         new_value = int(base_value / 100)
+    #         value = f"{new_value} GP"
+    #         return value
+    #     new_value = int(base_value / 10)
+    #     value = f"{new_value} SP"
+    #     return value
 
 
     while True:     # Cycles amount through, tabulating amount of each coin before appending them to a string at the end.

@@ -6,13 +6,13 @@ clear = lambda: os.system('cls')
 
 # Simplest of the purchase order modules due to minimal details about products.
 
-def purchase_gear(gear, orders, user, users, discount):
+def purchase_gear(gear, orders, user, users, discount, client, userWallet):
     logging.info("Entered gear purchase module.")
     while True:
         purchasing = False
         clear()
         try:
-            menu_option = str(input(f"\n\tAvailable Funds: {conversion(user.get('Wallet'))}\n\tSort by: Adventuring Gear\n\tName\n\tCost\n\tWeight\n\tPurchase\n\tQuit\n\t"))
+            menu_option = str(input(f"\n\tAvailable Funds: {conversion(userWallet)}\n\tSort by: Adventuring Gear\n\tName\n\tCost\n\tWeight\n\tPurchase\n\tQuit\n\t"))
             menu_option = menu_option.lower()
         except ValueError as ve:
             print("Invalid input, please try again.")
@@ -172,7 +172,7 @@ def purchase_gear(gear, orders, user, users, discount):
                     print("I'm sorry, that item is out of stock, please select another item.")
                     logging.stock("Item out of stock")
                     continue
-                elif int(cart.get('cost')) > int(user.get('Wallet')):
+                elif int(cart.get('cost')) > int(userWallet):
                     print("I'm sorry, you cannot seem to afford that, please select another item.")
                     logging.stock("Insufficient funds attempt.")
                     continue
@@ -213,16 +213,27 @@ def purchase_gear(gear, orders, user, users, discount):
 
             # Confirmed order pushed to orders database.
             if confirmed == False:
-                print(f"Thank you for purchasing a {cart.get('name')}! Enjoy your purchase!")
-                logging.info("Pushing order to database.")
-                newOrder = {'User':str(user.get('Username')), 'Spent':int(cart.get('cost')), 'Bought':str(cart.get('name')), 'Category':'Gear'}
-                orders.insert_one(newOrder)
+                oldWallet = userWallet
+                username = user.get('Username')
+                ware = cart.get('name')
+                price = cart.get('cost')
+                print(f"Thank you for purchasing a {ware}! Enjoy your purchase!")
+                logging.info(f"Pushing order to database, charging user: {username}.")
+                newOrder = {'User':str(username), 'Spent':int(price), 'Bought':str(ware), 'Category':'Gear'}
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        orders.insert_one(newOrder)
                 newStock = int(cart.get('stock')) - 1
-                gear.update_one({'name':str(cart.get('name'))}, { "$set": { 'stock': newStock } })
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        gear.update_one({'name':str(ware)}, { "$set": { 'stock': newStock } })
                 if discount:
-                    discounted = cart.get('cost') * 0.90
-                    newWallet = int(user.get('Wallet')) - int(discounted)
-                else:
-                    newWallet = int(user.get('Wallet')) - int(cart.get('cost'))
-                users.update_one({'Username':str(user.get('Username'))}, { "$set": { 'Wallet': newWallet}})
+                    price *= 0.90
+                newWallet = int(oldWallet) - int(price)
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        users.update_one({'Username':str(username)}, { "$set": { 'Wallet': newWallet}})
+                UserName = user.get('Username')
+                user = users.find_one({'Username':str(UserName)})
+                userWallet = newWallet
                 input()

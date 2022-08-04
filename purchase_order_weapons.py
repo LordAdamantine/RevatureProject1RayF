@@ -6,13 +6,13 @@ clear = lambda: os.system('cls')
 
 # Purchase module for weapons, will be considered the default for explaining structures and providing documentation on the purchase order modules.
 
-def purchase_weapon(weapons, orders, user, users, discount):
+def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
     logging.info("Entered weapons purchase module.")
     while True:
         purchasing = False
         clear()
         try:        # main menu
-            menu_option = str(input(f"\n\tAvailable Funds: {conversion(user.get('Wallet'))}\n\tSort by: Weaponry\n\tClassification\n\tName\n\tCost\n\tDamage\n\tProperties\n\tPurchase\n\tQuit\n\t"))
+            menu_option = str(input(f"\n\tAvailable Funds: {conversion(userWallet)}\n\tSort by: Weaponry\n\tClassification\n\tName\n\tCost\n\tDamage\n\tProperties\n\tPurchase\n\tQuit\n\t"))
             menu_option = menu_option.lower()
         except ValueError as ve:
             print("Invalid input, please try again.")
@@ -337,16 +337,28 @@ def purchase_weapon(weapons, orders, user, users, discount):
 
             # Confirmed order pushed to orders database.
             if confirmed == False:
+                username = user.get('Username')
                 print(f"Thank you for purchasing a {cart.get('name')}! Enjoy your purchase!")
-                logging.info("Pushing order to database.")
+                logging.info(f"Pushing order to database, charging user: {username}.")
                 newOrder = {'User':str(user.get('Username')), 'Spent':int(cart.get('cost')), 'Bought':str(cart.get('name')), 'Category':'Weapon'}
-                orders.insert_one(newOrder)
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        orders.insert_one(newOrder)
                 newStock = int(cart.get('stock')) - 1
-                weapons.update_one({'name':str(cart.get('name'))}, { "$set": { 'stock': newStock } })
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        weapons.update_one({'name':str(cart.get('name'))}, { "$set": { 'stock': newStock } })
                 if discount:
                     discounted = cart.get('cost') * 0.90
-                    newWallet = int(user.get('Wallet')) - int(discounted)
+                    newWallet = int(userWallet) - int(discounted)
+                    price = discounted
                 else:
-                    newWallet = int(user.get('Wallet')) - int(cart.get('cost'))
-                users.update_one({'Username':str(user.get('Username'))}, { "$set": { 'Wallet': newWallet}})
+                    newWallet = int(userWallet) - int(cart.get('cost'))
+                    price = cart.get('cost')
+                with client.start_session() as session:
+                    with session.start_transaction():
+                        users.update_one({'Username':str(user.get('Username'))}, { "$set": { 'Wallet': newWallet}})
+                UserName = user.get('Username')
+                user = users.find_one({'Username':str(UserName)})
+                userWallet = newWallet
                 input()

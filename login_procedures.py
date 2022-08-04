@@ -4,7 +4,7 @@ from pymongo import MongoClient
 import re
 clear = lambda: os.system('cls')
 
-def login(users):
+def login(users, client):
 
     while True:     # This block is simple input filtering.
         while True:
@@ -55,7 +55,7 @@ def login(users):
                 else:
 
                     break
-
+            
             pw_attempts = 0
             pword_check = existing.get('Password')      # Preloads user password for checking, probably wouldn't be safe in an actual application but works for here.
             while True:
@@ -165,12 +165,13 @@ def login(users):
                     break
         clear()
         # First instance of writing to the database to occur in the code so far.
-        users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer"})
+        with client.start_session() as session:
+            with session.start_transaction():
+                users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer"})
         new_user = users.find_one({'Username':str(uname)})
         return new_user
         
 
     if option == 3:
-        input("\t\tQuitting back to menu.\n")
         clear()
         return None
