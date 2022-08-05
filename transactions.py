@@ -10,8 +10,11 @@ clear = lambda: os.system('cls')
 
 def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet):
     
-    while True:
+    while True:         # Handles the different purchase modules to separate the syntaxes.
         clear()
+        UserName = user.get('Username')
+        user = users.find_one({'Username':str(UserName)})
+        userWallet = user.get('Wallet')
         try:
             menu_option = str(input(f"\n\n\tAvailable Funds: {conversion(userWallet)}\n\tCategories:\n\tArmor\n\tWeapons\n\tAdventuring Gear\n\tOther\n\tQuit\n\t"))
             menu_option = menu_option.lower()
@@ -28,11 +31,11 @@ def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, 
         elif "gear" in menu_option:
             userWallet = purchase_gear(gear, orders, user, users, discount, client, userWallet)
         elif "magic" in menu_option:
-            print("Coming soon...")
+            input("Coming soon...")
         elif "misc" in menu_option:
-            print("Coming soon...")
+            input("Coming soon...")
         elif "other" in menu_option:
-            print("Coming soon...")
+            input("Coming soon...")
         elif "quit"  in menu_option:
             return userWallet
         else:
@@ -40,4 +43,5 @@ def purchase(armor, weapons, gear, misc, orders, user, users, discount, client, 
             logging.error("Store option limit exceeded, trying again...")
 
 # Separated purchase definitions into separate modules due to large size from unique modifications necessary for each.
+# Could technically be moved into the main module, but can't be bothered to when this works.
         

@@ -36,9 +36,9 @@ def conversion(amount):     # Converts cost values into 5E currencies for aesthe
             break
         if new_value > 9:
             if new_value > 99:
-                if new_value > 999:
+                if new_value > 999: #Used to handle platinum coins but decided they were too cumbersome for the interface and everyone likes gold anyway.
                     new_value -= 1000
-                    plats += 1
+                    golds += 10
                     #print("Plat test")
                     continue
                 new_value -= 100
@@ -50,14 +50,14 @@ def conversion(amount):     # Converts cost values into 5E currencies for aesthe
             #print("Silver test")
             continue
     
-    if plats > 0:
-        value += (f"{plats} PP ")
+    # if plats > 0:
+    #     value += (f"{plats} PP ")
     if golds > 0:
         value += (f"{golds} GP ")
     if silvers > 0:
         value += (f"{silvers} SP ")
     if coppers > 0:
-        value += (f"{coppers} CP")
+        value += (f"{coppers} CP ")
 
     return value
     

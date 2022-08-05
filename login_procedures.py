@@ -178,4 +178,5 @@ def signup(users, client):
             users.insert_one({'First Name':str(fname), 'Last Name':str(lname), 'Username':str(uname), 'Password':str(pword), 'Status':"Customer", 'Wallet':10000})
     new_user = users.find_one({'Username':str(uname)})
     new_user = new_user.get('Username')
+    logging.info(f"Account created for {new_user}")
     return new_user

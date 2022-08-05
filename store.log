@@ -101,3 +101,70 @@
 2022-08-04 16:18:06,797 :: Administrator login detected.
 2022-08-04 16:18:42,821 :: Administrator login detected.
 2022-08-04 16:19:02,485 :: Closing store interface.
+2022-08-05 08:41:41,699 :: Loading database records...
+2022-08-05 08:41:53,629 :: Administrator login detected.
+2022-08-05 08:43:30,450 :: Loading database records...
+2022-08-05 08:43:34,654 :: Administrator login detected.
+2022-08-05 08:49:13,335 :: Loading database records...
+2022-08-05 08:49:25,151 :: Administrator login detected.
+2022-08-05 08:54:52,119 :: 10000 amount added to account: Employee4
+2022-08-05 08:55:21,055 :: Entered armor purchase module.
+2022-08-05 08:56:07,847 :: Pushing order to database, charging user: Employee4.
+2022-08-05 08:56:19,755 :: Entered weapons purchase module.
+2022-08-05 08:57:12,503 :: Pushing order to database, charging user: Employee4.
+2022-08-05 08:57:16,586 :: Entered gear purchase module.
+2022-08-05 08:58:53,433 :: Reconfirming item.
+2022-08-05 08:59:08,408 :: Pushing order to database, charging user: Employee4.
+2022-08-05 09:04:27,138 :: Entered weapons purchase module.
+2022-08-05 09:07:03,611 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:07:08,372 :: Entered weapons purchase module.
+2022-08-05 09:07:17,701 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:07:23,188 :: Entered weapons purchase module.
+2022-08-05 09:07:32,486 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:08:02,943 :: 12345 amount added to account: Visitor3
+2022-08-05 09:08:47,152 :: 100000 amount added to account: RayF
+2022-08-05 09:09:02,243 :: Administrator login detected.
+2022-08-05 09:10:58,536 :: Closing store interface.
+2022-08-05 09:44:41,149 :: Loading database records...
+2022-08-05 09:44:59,053 :: Options exceeded on login menu input, trying again...
+2022-08-05 09:45:11,901 :: Shopper2 has logged in.
+2022-08-05 09:46:28,431 :: Invalid input on deposit, trying again.
+2022-08-05 09:46:40,924 :: 2 GP 1 SP 5 CP  amount added to account: Shopper2
+2022-08-05 09:46:40,924 :: Shopper2 has deposited 2 GP 1 SP 5 CP  into their account.
+2022-08-05 09:46:46,251 :: Entered gear purchase module.
+2022-08-05 09:47:07,425 :: Pushing order to database, charging user: Shopper2.
+2022-08-05 09:47:09,119 :: Shopper2 purchased a Poison, Basic (Vial) at 100 GP !
+2022-08-05 09:47:12,874 :: Entered weapons purchase module.
+2022-08-05 09:47:22,889 :: Pushing order to database, charging user: Shopper2.
+2022-08-05 09:47:23,847 :: Shopper2 purchased a Dagger at 2 GP !
+2022-08-05 09:47:29,503 :: Entered armor purchase module.
+2022-08-05 09:50:30,954 :: Loading database records...
+2022-08-05 09:50:44,498 :: Shopper2 has logged in.
+2022-08-05 09:50:50,314 :: Entered armor purchase module.
+2022-08-05 09:50:56,792 :: Insufficient funds attempt.
+2022-08-05 09:52:01,596 :: Loading database records...
+2022-08-05 09:52:13,365 :: Shopper2 has logged in.
+2022-08-05 09:52:18,949 :: Entered armor purchase module.
+2022-08-05 09:53:49,986 :: Loading database records...
+2022-08-05 09:53:56,271 :: Shopper2 has logged in.
+2022-08-05 09:54:00,429 :: Entered armor purchase module.
+2022-08-05 09:56:26,737 :: Loading database records...
+2022-08-05 09:56:46,300 :: Shopper2 has logged in.
+2022-08-05 09:56:49,522 :: Entered armor purchase module.
+2022-08-05 09:56:52,750 :: Entered weapons purchase module.
+2022-08-05 09:56:55,680 :: Entered gear purchase module.
+2022-08-05 09:56:59,733 :: Shopper2 has logged out.
+2022-08-05 09:57:06,562 :: Visitor3 has logged in.
+2022-08-05 09:57:11,551 :: Entered armor purchase module.
+2022-08-05 09:58:00,051 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:58:01,401 :: Visitor3 purchased a Studded Leather at 45 GP !
+2022-08-05 09:58:04,700 :: Entered weapons purchase module.
+2022-08-05 09:58:43,567 :: Reconfirming item.
+2022-08-05 09:58:51,115 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:58:52,209 :: Visitor3 purchased a Warhammer at 15 GP !
+2022-08-05 09:58:55,796 :: Entered gear purchase module.
+2022-08-05 09:59:04,279 :: Incorrect password input, trying again...
+2022-08-05 09:59:11,970 :: Pushing order to database, charging user: Visitor3.
+2022-08-05 09:59:13,967 :: Visitor3 purchased a Rope, Hempen (50 ft) at 1 GP !
+2022-08-05 09:59:31,376 :: Visitor3 has logged out.
+2022-08-05 09:59:32,707 :: Closing store interface.

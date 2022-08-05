@@ -14,7 +14,7 @@ def user_administration(users, client):
             menu_option = menu_option.lower()
         except ValueError as ve:
             print("Invalid input, please try again.")
-            logging.error("Invalid admin menu input, trying again...")
+            logging.error("Invalid users administration menu input, trying again...")
 
         if "view" in menu_option:
             clear()
@@ -40,7 +40,7 @@ def user_administration(users, client):
             break
 
 def accounts_print(users):
-    user_list = users.find({}, {'First Name':1,'Username':1, 'Status':1, 'Wallet':1, '_id':0})
+    user_list = users.find({}, {'First Name':1,'Username':1, 'Status':1, 'Wallet':1, '_id':0}).sort('Status', -1)
     
     for elem in user_list:
         if elem != None:
@@ -82,20 +82,21 @@ def remove_accounts(users, client):
 
         while True:
             try:
-                menu_option = str(input(f"\n\n\t\tWould you like to delete account of {uname}? Yes or No?"))
+                menu_option = str(input(f"\n\n\t\tWould you like to delete account of {uname}? Yes or No? "))
                 menu_option = menu_option.lower()
             except ValueError as ve:
                 print("Invalid input, please try again.")
-                logging.error("Invalid admin menu input, trying again...")
+                logging.error("Invalid user deletion menu input, trying again...")
 
             if "y" in menu_option:
                 break
             else:
                 return
-        
+        logging.info(f"{uname} account removed from database.")
         with client.start_session() as session:
             with session.start_transaction():
                 users.delete_one({'Username':str(uname)})
+        
         break
 
 def modify_accounts(users, client):
@@ -137,7 +138,7 @@ def modify_accounts(users, client):
         elif "admin" in menu_option:
             access = "Admin"
             break
-    
+    logging.info(f"{uname} has been given {access} status.")
     with client.start_session() as session:
         with session.start_transaction():
             users.update_one({'Username':str(uname)}, { "$set": { 'Status': access}})

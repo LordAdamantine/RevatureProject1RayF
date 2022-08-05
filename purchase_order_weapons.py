@@ -78,7 +78,7 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     purchasing = True
                     break
                 elif "quit" in menu_option:
-                    break
+                    return userWallet
                 else:
                     print("Invalid input, please try again.")
                     logging.error("Invalid store menu input, trying again...")
@@ -292,11 +292,11 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     continue
                 elif int(cart.get('stock')) == 0:
                     print("I'm sorry, that item is out of stock, please select another item.")
-                    logging.stock("Item out of stock")
+                    logging.info(f"{cart.get('name')} out of stock")
                     continue
                 elif int(cart.get('cost')) > int(user.get('Wallet')):
                     print("I'm sorry, you cannot seem to afford that, please select another item.")
-                    logging.stock("Insufficient funds attempt.")
+                    logging.info("Insufficient funds attempt.")
                     continue
 
                 print("\n" + "Please confirm your selection.")
@@ -366,4 +366,5 @@ def purchase_weapon(weapons, orders, user, users, discount, client, userWallet):
                     with session.start_transaction():
                         orders.insert_one(newOrder)
                 input(f"Thank you for purchasing a {cart.get('name')} at {conversion(price)}! Enjoy your purchase!")
+                logging.info(f"{UserName} purchased a {cart.get('name')} at {conversion(price)}!")
                 return userWallet

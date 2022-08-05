@@ -15,11 +15,11 @@ Introduction - Done
     preload certain functions and data
 Login options - Done
     User vs Admin vs account creation
-Store functionality
+Store functionality - Done
     Purchase, order history, admin management
-Multiple data tables
-Manipulating said tables
-Event Logging
+Multiple data tables - Done
+Manipulating said tables - Done
+Event Logging - Done
 
 
 Merchandise database:
@@ -79,7 +79,8 @@ def main():
             break
         UserName = user.get('Username')
         user = users.find_one({'Username':str(UserName)})
-        userWallet = user.get('Wallet')
+        userWallet = user.get('Wallet')     # My workaround to a strange issue with everything else working but the wallet, strangely, not updating in application, only on launch.
+        logging.info(f"{UserName} has logged in.")
         # for elem in user:
         #     print(elem)
         # login_test = user.get('First Name')
@@ -94,7 +95,7 @@ def main():
         if user.get('Status') != "Admin":
             shopping = True
 
-        while administration:
+        while administration:       # Only admin status allows access to this menu.
 
             try:
                 menu_option = str(input("\n\n\t\tAdministrator Actions\n\tStock\n\tAccounts\n\tOrders\n\tShop\n\tQuit\n\t"))
@@ -103,7 +104,7 @@ def main():
                 print("Invalid input, please try again.")
                 logging.error("Invalid admin menu input, trying again...")
 
-            if "shop" in menu_option:
+            if "shop" in menu_option:       # Other accounts default to the shopping menu, these allow the admins to use the employee discount.
                 shopping = True
                 break
             elif "pur" in menu_option:
@@ -115,7 +116,7 @@ def main():
             elif "buy" in menu_option:
                 shopping = True
                 break
-            elif "ord" in menu_option:
+            elif "ord" in menu_option:      # Input freedom achieved through modules and elif substring in blocks.
                 orders_administration(users, orders, client)
             elif "hist" in menu_option:
                 orders_administration(users, orders, client)
@@ -147,7 +148,7 @@ def main():
             
             clear()
 
-            if "shop" in menu_option:
+            if "shop" in menu_option:       # Again, input freedom.
                 userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
             elif "pur" in menu_option:
                 userWallet = purchase(armor, weapons, gear, misc, orders, user, users, discount, client, userWallet)
@@ -166,7 +167,7 @@ def main():
                     while True:
                         try:
                             print(conversion(userWallet))
-                            deposit = int(input("Please enter how many coppers you would like to add to your account.\nRemember! Coppers, Silvers, Golds, and Platinums are orders of 10.\n\t>>> "))
+                            deposit = int(input("Please enter how many coppers you would like to add to your account.\nRemember! Coppers, Silvers, and Golds are orders of 10.\n\t>>> "))
                         except ValueError as ve:
                             print("Improper input, please try again.")
                             logging.error("Invalid input on deposit, trying again.")
@@ -179,12 +180,13 @@ def main():
                         except ValueError as ve:
                             print("Improper input, please try again.")
                             logging.error("Invalid input on deposit confirmation, trying again.")
-                        if "y" in confirmation:
+                        if "y" in confirmation: # Adaptive deposit logging.
                             UserName = user.get('Username')
                             user = users.find_one({'Username':str(UserName)})
                             print(f"Thank you for your deposit! {conversion(deposit)} have been added to your account!\n")
-                            logging.info(f"{deposit} amount added to account: {UserName}")
+                            logging.info(f"{conversion(deposit)} amount added to account: {UserName}")
                             newWallet = int(user.get('Wallet')) + deposit
+                            logging.info(f"{UserName} has deposited {conversion(deposit)} into their account.")
                             with client.start_session() as session:
                                 with session.start_transaction():
                                     users.update_one({'Username':UserName}, { "$set": { 'Wallet': newWallet}})
@@ -206,6 +208,7 @@ def main():
                 logging.error("Store option limit exceeded, trying again...")
             # By putting most functionality into modules, reduce main code clutter, especially for looping actions.
         clear()
+        logging.info(f"{UserName} has logged out.")
         # Already naturally loops back to start to where there's an option to break out.
 
     # Include some kind of parting farewell thanking the customer upon breaking out and quitting.

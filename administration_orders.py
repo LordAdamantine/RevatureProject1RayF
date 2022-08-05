@@ -5,6 +5,10 @@ import os
 from conversion_kit import conversion
 clear = lambda: os.system('cls')        # Noticed ones like this can just be put outside to give every module inside access to these easy actions.
 
+'''
+Administrate orders and issue refunds.
+'''
+
 def orders_administration(users, orders, client):
     while True:
         clear()
@@ -19,7 +23,7 @@ def orders_administration(users, orders, client):
             clear()
             order_history = orders.find().sort('Username')
             print("Order History")
-            for elem in order_history:
+            for elem in order_history:      
                 if elem != None:
                     user_name = str(elem.get('User'))
                     value = conversion(elem.get('Spent'))
@@ -41,8 +45,8 @@ def orders_administration(users, orders, client):
             clear()
             break
 
-def accounts_print(users):
-    user_list = users.find({}, {'First Name':1,'Username':1, 'Status':1, 'Wallet':1, '_id':0})
+def accounts_print(users):      # copied from another module, easier to just pull the method out.
+    user_list = users.find({}, {'First Name':1,'Username':1, 'Status':1, 'Wallet':1, '_id':0}).sort('Status', -1)
     
     for elem in user_list:
         if elem != None:
@@ -72,7 +76,7 @@ def refund(users, orders, client):
 
         order_history = orders.find({'User': f'{uname}'}).sort('name')
 
-        for elem in order_history:
+        for elem in order_history:      # Print just that user's orders for easy reference.
             user_name = elem.get('User')
             value = conversion(elem.get('Spent'))
             category = elem.get('Category')
@@ -93,7 +97,7 @@ def refund(users, orders, client):
             #     print(elem)
             # input()
             # break
-            if refunded != None:
+            if refunded != None:        # These blocks I think were causing weird None issues at the ends of blocks, pulled them to keep things simple and functional.
                 # user_name = elem.get('User')
                 # value = conversion(elem.get('Spent'))
                 # category = elem.get('Category')
@@ -108,6 +112,7 @@ def refund(users, orders, client):
                 oldWallet = oldWallet.get('Wallet')
                 refund_value = refunded.get('Spent')
                 newWallet = oldWallet + refund_value
+                logging.info(f"{uname} has been refunded their {menu_option} for {refund_value}.")
                 with client.start_session() as session:
                     with session.start_transaction():
                         users.update_one({'Username':str(uname)}, { "$set": { 'Wallet': newWallet}})

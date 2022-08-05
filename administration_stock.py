@@ -16,7 +16,9 @@ def stock_administration(armor, weapons, gear, misc, client):
             except ValueError as ve:
                 print("Invalid input, please try again.")
                 logging.error("Invalid stock admin menu input, trying again...")
-
+            # Quickly print all items for each category for reference.
+            # Cycles through the print options until you quit out or decide to edit stock.
+            # Did not have time to implement adding stock through the interface.
             if "arm" in menu_option:
                 clear()
                 armor_print(armor)
@@ -116,11 +118,13 @@ def stock_edit(target, category, selection, client):
             with session.start_transaction():
                 category.delete_one({'name': target.get('name')})
         print(f"The {target.get('name')} has been discontinued.")
+        logging.info(f"The {target.get('name')} has been discontinued.")
     else:
         with client.start_session() as session:
             with session.start_transaction():
                 category.update_one({'name':target.get('name')}, { "$set": { 'stock': 10}})
         print(f"The {target.get('name')} is back in stock!")
+        logging.info(f"The {target.get('name')} is back in stock!")
 
 
 
@@ -156,7 +160,7 @@ def weapons_print(weapons):
         item_price = conversion(cart.get('cost'))
         item_weight = str(cart.get('weight'))
         item_count = str(cart.get('stock'))
-        print("Item: " + f"{item_name}", end=" | ")
+        print("Item: " + f"{item_name:20}", end=" | ")
         print("Class: " + f"{item_class:20}", end=" | ")
         print("Damage: " + f"{item_damage:20}", end=" | ")
         print("Price: " + f"{item_price:>15}", end=" | ")
